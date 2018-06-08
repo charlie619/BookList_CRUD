@@ -21,7 +21,7 @@ namespace BookList_CRUD.Controllers
             return View(_db.Books.ToList());
         }
 
-        //Get : Book/Create
+        //Get : Books/Create
         public IActionResult Create()
         {
             return View();
@@ -39,7 +39,7 @@ namespace BookList_CRUD.Controllers
             }
             return View(book);
         }
-        // Details : Book/Details/id
+        // Get : Books/Details/id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -53,6 +53,69 @@ namespace BookList_CRUD.Controllers
             }
 
             return View(book);
+        }
+
+        // Get : Books/Edit/id
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var book = await _db.Books.SingleOrDefaultAsync(x => x.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return View(book);
+        }
+
+        // Post : Books/Edit/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Book book)
+        {
+            if (id != book.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _db.Update(book);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(book);
+        }
+
+        // Get : Books/Delete/id
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var book = await _db.Books.SingleOrDefaultAsync(x => x.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return View(book);
+        }
+
+        // Post : Books/Delete/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var book = await _db.Books.SingleOrDefaultAsync(x => x.Id == id);
+            _db.Remove(book);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));        
+       
         }
 
         protected override void Dispose(bool disposing)
