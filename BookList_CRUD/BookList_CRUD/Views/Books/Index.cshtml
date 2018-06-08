@@ -13,19 +13,18 @@
 
 <div class="form-border">
     <table class="table">
-
         <tr>
             <th>
                 @Html.DisplayNameFor(x => x.Name)
             </th>
             <th></th>
-        </tr>
+        </tr>        
         @foreach (var item in Model)
         {
             <tr>
                 <td>
                     @Html.DisplayFor(x => item.Name)
-                </td>   
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-success">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
