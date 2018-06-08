@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookList_CRUD.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookList_CRUD.Controllers
 {
@@ -36,6 +37,21 @@ namespace BookList_CRUD.Controllers
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            return View(book);
+        }
+        // Details : Book/Details/id
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var book = await _db.Books.SingleOrDefaultAsync(x => x.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
             return View(book);
         }
 
